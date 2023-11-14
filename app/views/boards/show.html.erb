@@ -1,71 +1,63 @@
 <div>
   <div>
+  <hr>
     <h1>
-      Board #<%= @the_board.id %> details
+      <%= @the_board.name %>
     </h1>
-
+<hr>
     <div>
-      <div>
-        <a href="/boards">
-          Go back
-        </a>
-      </div>
+      <h2>
+        Add a new post
+      </h2>
 
-      <div>
-        <a href="/delete_board/<%= @the_board.id %>">
-          Delete board
-        </a>
-      </div>
+      <form action="/boards/<%= @the_board.id %>/insert_post" method="post">
+        <input type="hidden" name="board_id" value="<%= @the_board.id %>">
+        <div>
+          <label for="title_box">
+            Title
+          </label>
+
+          <input type="text" id="title_box" name="query_title">
+        </div>
+
+        <div>
+          <label for="body_box">
+            Body
+          </label>
+
+          <textarea id="body_box" name="query_body" rows="3"></textarea>
+        </div>
+
+        <div>
+          <label for="expires_on_box">
+            Expires on
+          </label>
+
+          <input type="date" id="expires_on_box" name="query_expires_on">
+        </div>
+
+        <button>
+          Add post
+        </button>
+      </form>
     </div>
+ <hr>
+ <div>
+  <table border="1" style="width: 100%;">
+    <tr>
+      <th style="width: 20%;">Title</th>
+      <th style="width:60%;">Body</th>
+      <th style="width: 10%;">Posted On</th>
+      <th style="width: 10%;">Expires On</th>
+    </tr>
 
-    <dl>
-      <dt>
-        Name
-      </dt>
-      <dd>
-        <%= @the_board.name %>
-      </dd>
-
-      <dt>
-        Created at
-      </dt>
-      <dd>
-        <%= time_ago_in_words(@the_board.created_at) %> ago
-      </dd>
-
-      <dt>
-        Updated at
-      </dt>
-      <dd>
-        <%= time_ago_in_words(@the_board.updated_at) %> ago
-      </dd>
-    </dl>
-  </div>
+    <% @the_board.posts.each do |post| %>
+      <tr>
+        <td><%= post.title %></td>
+        <td><%= post.body %></td>
+        <td><%= post.created_at.strftime("%Y-%m-%d %H:%M:%S") %></td>
+        <td><%= post.expires_on.strftime("%Y-%m-%d %H:%M:%S") %></td>
+      </tr>
+    <% end %>
+  </table>
 </div>
-
-<hr>
-
-
-<div>
-  <div>
-    <h2>
-      Edit board
-    </h2>
-
-    <form action="/modify_board/<%= @the_board.id %>"  method="post" >
-      <div>
-        <label for="name_box">
-          Name
-        </label>
-
-        <input type="text" id="name_box" name="query_name" value="<%= @the_board.name %>">
-      </div>
-
-      <button>
-        Update board
-      </button>
-    </form>
-  </div>
-</div>
-
-<hr>
